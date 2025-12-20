@@ -1,10 +1,12 @@
 class Hashmap{
-    constructor(initialCapacity = 16){
+    constructor(initialCapacity = 16, loadFactor = 0.75){
         //Array of buckets (capacity)
         //Each bucket will store an aray of [key, value] pairs
-        this.buckets = new Array(initialCapacity);
-        this.storedItems = 0;
-
+        this.capacity = initialCapacity;
+        this.loadFactor = loadFactor;
+        this.buckets = new Array(16);
+        this.size = 0;
+        
     }
 
     hash(key){
@@ -19,13 +21,13 @@ class Hashmap{
     }
 
     set(key, value){
-        var hashedKey = this.hash(key);
-        if(buckets[hashedKey]){
-            this.buckets[hashed] = new Array({key : value});
+        var index = this.hash(key);
+        if(this.buckets[index]){
+            this.buckets[index] = new Array({key, value});
         }else{
-            this.buckets[hashed] = new Array();
-            this.buckets[hashed].push({key : value})
-            this.storedItems = this.storedItems + 1;
+            this.buckets[index] = new Array();
+            this.buckets[index].push({key,  value})
+            this.size = this.size + 1;
         }
             
     }
@@ -50,7 +52,7 @@ class Hashmap{
     remove(key){
         if(this.has(key)){
             this.buckets.splice(this.hash(key), 1);
-            this.storedItems = this.storedItems - 1;
+            this.size = this.size - 1;
             return true;
         }else{
             return false;
@@ -58,9 +60,8 @@ class Hashmap{
     }
 
     length(){
-        return this.storedItems;
+        return this.size;
     }
-
 
     clear(){
         this.buckets = new Array(16);
